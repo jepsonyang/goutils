@@ -51,6 +51,25 @@ func RedisSetRemoveByKey(conn redis.Conn, key string, values []string) (int, err
 }
 
 /*
+* 判断member是否为集合key的成员
+* @return 如果member元素是集合的成员,返回true;如果member不是集合的成员,或key不存在,返回false
+**/
+func RedisSetIsMember(conn redis.Conn, redisType RedisType, member string) (bool, error) {
+	if redisType.GetType() != KRedisSet {
+		return false, RedisSetTypeErr
+	}
+	return RedisSetIsMemberByKey(conn, redisType.GetKey(), member)
+}
+
+func RedisSetIsMemberByKey(conn redis.Conn, key string, member string) (bool, error) {
+	result, err := redis.Int(conn.Do("SISMEMBER", key, member))
+	if err != nil {
+		return false, err
+	}
+	return result == 1, nil
+}
+
+/*
 * 获取集合中的所有成员
 **/
 func RedisSetMembers(conn redis.Conn, redisType RedisType) ([]string, error) {

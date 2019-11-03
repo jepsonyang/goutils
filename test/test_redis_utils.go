@@ -11,16 +11,31 @@ func TestRedisUtils() {
 
 	//redis_db
 	if false {
-		res, err := redisutils.RedisExistKey(conn, "NameList")
+		res, err := redisutils.RedisExistByKey(conn, "NameList")
 		fmt.Println(res, err)
 	}
 
 	//redis_string
-	if true {
-		err := redisutils.RedisStringSetKey(conn, "jepson", "This is test.", 60)
+	if false {
+		err := redisutils.RedisStringSetByKey(conn, "jepson", "This is test.", 60)
 		fmt.Println(err)
 
-		res, err := redisutils.RedisStringGetKey(conn, "jepson")
+		res, err := redisutils.RedisStringGetByKey(conn, "jepson")
 		fmt.Println(res, err)
+	}
+
+	//redis_set
+	if true {
+		var nAdd, nRem int
+		var err error
+
+		nAdd, err = redisutils.RedisSetAddByKey(conn, "jepson_set", []string{"jepson1"})
+		fmt.Println(nAdd, err)
+
+		nAdd, err = redisutils.RedisSetAddByKey(conn, "jepson_set", []string{"jepson2"})
+		fmt.Println(nAdd, err)
+
+		nRem, err = redisutils.RedisSetRemoveByKey(conn, "jepson_set", []string{"jepson2"})
+		fmt.Println(nRem, err)
 	}
 }
