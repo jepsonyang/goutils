@@ -7,7 +7,11 @@ import "github.com/gomodule/redigo/redis"
 * @返回值 设置成功返回1;当key不存在或者不能为key设置生存时间时(比如在低于2.1.3版本的Redis中你尝试更新key的生存时间),返回0;
 **/
 func RedisExpire(conn redis.Conn, redisType RedisType, expire int) (int, error) {
-	return redis.Int(conn.Do("EXPIRE", redisType.GetKey(), expire))
+	return RedisExpireKey(conn, redisType.GetKey(), expire)
+}
+
+func RedisExpireKey(conn redis.Conn, key string, expire int) (int, error) {
+	return redis.Int(conn.Do("EXPIRE", key, expire))
 }
 
 /*
@@ -15,7 +19,11 @@ func RedisExpire(conn redis.Conn, redisType RedisType, expire int) (int, error) 
 * @返回值 存在返回1，不存在返回0
 **/
 func RedisExist(conn redis.Conn, redisType RedisType) (int, error) {
-	return redis.Int(conn.Do("EXISTS", redisType.GetKey()))
+	return RedisExistKey(conn, redisType.GetKey())
+}
+
+func RedisExistKey(conn redis.Conn, key string) (int, error) {
+	return redis.Int(conn.Do("EXISTS", key))
 }
 
 /*
@@ -30,10 +38,6 @@ func RedisDel(conn redis.Conn, redisTypes []RedisType) (int, error) {
 	return RedisDelKey(conn, keys)
 }
 
-/*
-* 删除指定keys
-* @返回值 被删除的key个数
-**/
 func RedisDelKey(conn redis.Conn, keys []string) (int, error) {
 	if len(keys) <= 0 {
 		return 0, nil

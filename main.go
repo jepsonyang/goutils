@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	test.Test()
+	test.TestRedisUtils()
 }
