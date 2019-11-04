@@ -10,6 +10,14 @@ type Jepson struct {
 	Age  int    `redis:"age"`
 }
 
+func (param *Jepson) GetKey() string {
+	return "jepson_hash"
+}
+
+func (param *Jepson) GetType() string {
+	return redisUtils.KRedisHash
+}
+
 func Test() {
 	conn := GetRedisConnection()
 	defer conn.Close()
@@ -56,13 +64,21 @@ func Test() {
 		fmt.Println(err)
 		fmt.Println("----------------------------------------------")
 
+		//RedisHashSet
+		var jepson1 Jepson
+		jepson1.Name = "jepsonyang"
+		jepson1.Age = 20
+		err = redisUtils.RedisHashSet(conn, &jepson1, jepson1)
+		fmt.Println(err)
+		fmt.Println("----------------------------------------------")
+
 		//RedisHashGetByKey
-		var jepson Jepson
-		err = redisUtils.RedisHashGetByKey(conn, "jepson_hash", &jepson)
+		var jepson2 Jepson
+		err = redisUtils.RedisHashGetByKey(conn, "jepson_hash", &jepson2)
 		if err != nil {
 			fmt.Println(err)
 		} else {
-			fmt.Printf("%+v\n", jepson)
+			fmt.Printf("%+v\n", jepson2)
 		}
 		fmt.Println("----------------------------------------------")
 	}
