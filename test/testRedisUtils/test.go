@@ -23,7 +23,7 @@ func Test() {
 	defer conn.Close()
 
 	//redis_db
-	if false {
+	if true {
 		//RedisExistByKey
 		res, err := redisUtils.RedisExistByKey(conn, "NameList")
 		fmt.Println(res, err)
@@ -103,7 +103,7 @@ func Test() {
 	}
 
 	//redis_mutex
-	if true {
+	if false {
 		var err error
 
 		var mutex redisUtils.Mutex
