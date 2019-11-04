@@ -1,4 +1,4 @@
-package redisutils
+package redisUtils
 
 const (
 	KRedisString = "String"

@@ -1,4 +1,4 @@
-package test
+package testRedisUtils
 
 import (
 	"github.com/gomodule/redigo/redis"

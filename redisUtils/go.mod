@@ -1,4 +1,4 @@
-module github.com/jepsonyang/goutils
+module redisUtils
 
 go 1.12
 
