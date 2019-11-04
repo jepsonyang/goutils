@@ -1,6 +1,8 @@
 package redisUtils
 
-import "github.com/gomodule/redigo/redis"
+import (
+	"github.com/gomodule/redigo/redis"
+)
 
 /*
 * 设置过期时间
@@ -51,4 +53,30 @@ func RedisDelByKey(conn redis.Conn, keys []string) (int, error) {
 	}
 
 	return redis.Int(conn.Do("DEL", args...))
+}
+
+/*
+* 遍历
+* @cursor 遍历使用的游标，开始遍历填0
+* @pattern 指定一个glob风格的模式参数,只返回和给定模式相匹配的元素,如果不需要现在，直接填""即可;
+* @return nextCursor 下次迭代使用的游标值,0表示遍历完成; keys 本次遍历到的key列表
+**/
+func RedisScan(conn redis.Conn, cursor int, pattern string) (nextCursor int, keys []string, err error) {
+	args := redis.Args{}
+	args = args.Add(cursor)
+	if len(pattern) > 0 {
+		args = args.Add("MATCH")
+		args = args.Add(pattern)
+	}
+
+	var arrValue []interface{}
+	arrValue, err = redis.Values(conn.Do("SCAN", args...))
+	if err != nil {
+		return
+	}
+
+	nextCursor, _ = redis.Int(arrValue[0], nil)
+	keys, _ = redis.Strings(arrValue[1], nil)
+
+	return
 }

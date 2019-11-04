@@ -23,9 +23,28 @@ func Test() {
 	defer conn.Close()
 
 	//redis_db
-	if false {
+	if true {
+		//RedisExistByKey
 		res, err := redisUtils.RedisExistByKey(conn, "NameList")
 		fmt.Println(res, err)
+
+		//RedisScan
+		cursor := 0
+		for {
+			var arrKey []string
+			var err error
+
+			cursor, arrKey, err = redisUtils.RedisScan(conn, cursor, "")
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				fmt.Printf("%d %+v\n", cursor, arrKey)
+			}
+
+			if cursor==0 {
+				break
+			}
+		}
 	}
 
 	//redis_string
@@ -53,7 +72,7 @@ func Test() {
 	}
 
 	//redis_hash
-	if true {
+	if false {
 		var err error
 
 		//RedisHashSetByKey
