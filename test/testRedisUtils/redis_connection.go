@@ -8,7 +8,7 @@ import (
 
 const kRedisAddr = "9.134.7.64:6379"
 const kRedisPassword = ""
-const kRedisIndex = 0
+const kRedisIndex = 15
 
 const kRedisMaxOpenConns = 0	//一般设置为0,表示无限制
 const kRedisMaxIdleConns = 20
