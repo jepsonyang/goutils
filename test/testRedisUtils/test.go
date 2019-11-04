@@ -107,7 +107,7 @@ func Test() {
 		var err error
 
 		var mutex redisUtils.Mutex
-		mutex.New("jepmutex", "test", 30)
+		mutex.New("jeptest", "test", 30)
 
 		err = mutex.Lock(conn)
 		if err != nil {

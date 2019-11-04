@@ -36,7 +36,7 @@ type Mutex struct {
 }
 
 func (param *Mutex) New(key string, value string, expire int) {
-	param.key = key
+	param.key = "RedisUtilMutex:" + key
 	param.value = value
 	param.expire = expire
 }
