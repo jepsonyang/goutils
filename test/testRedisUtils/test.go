@@ -114,13 +114,8 @@ func Test() {
 			fmt.Println("lock failed. err:", err.Error())
 			return
 		}
-		fmt.Println("lock suc.")
+		defer mutex.Unlock(conn)
 
-		//err = mutex.Unlock(conn)
-		//if err != nil {
-		//	fmt.Println("unlock failed. err:", err.Error())
-		//	return
-		//}
-		//fmt.Println("unlock suc.")
+		fmt.Println("此处代码只允许一台服务器同时执行.")
 	}
 }
