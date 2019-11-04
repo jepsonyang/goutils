@@ -23,7 +23,7 @@ func Test() {
 	defer conn.Close()
 
 	//redis_db
-	if true {
+	if false {
 		//RedisExistByKey
 		res, err := redisUtils.RedisExistByKey(conn, "NameList")
 		fmt.Println(res, err)
@@ -100,5 +100,27 @@ func Test() {
 			fmt.Printf("%+v\n", jepson2)
 		}
 		fmt.Println("----------------------------------------------")
+	}
+
+	//redis_mutex
+	if true {
+		var err error
+
+		var mutex redisUtils.Mutex
+		mutex.New("jepmutex", "test", 30)
+
+		err = mutex.Lock(conn)
+		if err != nil {
+			fmt.Println("lock failed. err:", err.Error())
+			return
+		}
+		fmt.Println("lock suc.")
+
+		//err = mutex.Unlock(conn)
+		//if err != nil {
+		//	fmt.Println("unlock failed. err:", err.Error())
+		//	return
+		//}
+		//fmt.Println("unlock suc.")
 	}
 }
