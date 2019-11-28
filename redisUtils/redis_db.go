@@ -59,14 +59,19 @@ func RedisDelByKey(conn redis.Conn, keys []string) (int, error) {
 * 遍历
 * @cursor 遍历使用的游标，开始遍历填0
 * @pattern 指定一个glob风格的模式参数,只返回和给定模式相匹配的元素,如果不需要现在，直接填""即可;
+* @count 提示redis每次迭代返回多少个元素,默认为10; 注: 这只是一个提示,redis返回个数,不一定和指定值完全一样,但是，大部分情况是有效的;
 * @return nextCursor 下次迭代使用的游标值,0表示遍历完成; keys 本次遍历到的key列表
 **/
-func RedisScan(conn redis.Conn, cursor int, pattern string) (nextCursor int, keys []string, err error) {
+func RedisScan(conn redis.Conn, cursor int, pattern string, count int) (nextCursor int, keys []string, err error) {
 	args := redis.Args{}
 	args = args.Add(cursor)
 	if len(pattern) > 0 {
 		args = args.Add("MATCH")
 		args = args.Add(pattern)
+	}
+	if count > 0 {
+		args = args.Add("COUNT")
+		args = args.Add(count)
 	}
 
 	var arrValue []interface{}
